@@ -16,7 +16,7 @@ const inputClass = "w-full border border-border rounded-xl px-4 py-3 text-sm foc
 const labelClass = "block text-sm font-semibold text-foreground mb-1.5";
 const errorClass = "text-primary text-xs mt-1";
 
-export function RegistrationForm({ tournamentId }: { tournamentId: string }) {
+export function RegistrationForm({ tournamentId, userId }: { tournamentId: string; userId: string }) {
   const router = useRouter();
   const [ts, setTs] = useState<TournamentState | null>(null);
   const [loading, setLoading] = useState(true);
@@ -72,7 +72,7 @@ export function RegistrationForm({ tournamentId }: { tournamentId: string }) {
       const res = await fetch("/api/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ tournamentId, squadName, leaderName, leaderUid, whatsapp, player2Uid, player3Uid, player4Uid }),
+        body: JSON.stringify({ tournamentId, userId, squadName, leaderName, leaderUid, whatsapp, player2Uid, player3Uid, player4Uid }),
       });
 
       const data = await res.json();

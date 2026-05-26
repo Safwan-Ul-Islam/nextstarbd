@@ -1,30 +1,40 @@
 "use client";
 
+import Link from "next/link";
 import { useAnnouncements } from "@/lib/hooks/useAnnouncements";
 import { AnnouncementCard } from "@/components/announcements/AnnouncementCard";
-import { SquadList } from "./SquadList";
+import { MySquadCard } from "./MySquadCard";
 import { RoomInfoCard } from "./RoomInfoCard";
 import { Spinner } from "@/components/ui/Spinner";
 import { useTranslations } from "next-intl";
-import type { Tournament } from "@/lib/types";
+import type { Tournament, Registration } from "@/lib/types";
 
-export function TournamentDashboard({ tournament }: { tournament: Tournament }) {
+interface TournamentDashboardProps {
+  tournament: Tournament;
+  myRegistration: Registration | null;
+}
+
+export function TournamentDashboard({ tournament, myRegistration }: TournamentDashboardProps) {
   const t = useTranslations("dashboard");
   const { announcements, loading } = useAnnouncements(tournament.id);
+
+  const showRoomInfo =
+    tournament.status === "ongoing" &&
+    tournament.roomId &&
+    tournament.roomPassword &&
+    myRegistration?.approvalStatus === "approved";
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
       {/* Left: Announcements + Room Info */}
       <div className="lg:col-span-3 space-y-6">
-        {/* Room info (shown when ongoing and room is set) */}
-        {tournament.status === "ongoing" &&
-          tournament.roomId &&
-          tournament.roomPassword && (
-            <RoomInfoCard
-              roomId={tournament.roomId}
-              roomPassword={tournament.roomPassword}
-            />
-          )}
+        {/* Room info — only for approved registered players */}
+        {showRoomInfo && (
+          <RoomInfoCard
+            roomId={tournament.roomId!}
+            roomPassword={tournament.roomPassword!}
+          />
+        )}
 
         {/* Announcements */}
         <div>
@@ -50,12 +60,40 @@ export function TournamentDashboard({ tournament }: { tournament: Tournament }) 
         </div>
       </div>
 
-      {/* Right: Squad list */}
+      {/* Right: Own squad or prompt */}
       <div className="lg:col-span-2">
         <h2 className="font-display text-2xl text-foreground tracking-wide mb-4">
           {t("squads")}
         </h2>
-        <SquadList tournamentId={tournament.id} />
+        {myRegistration ? (
+          <MySquadCard registration={myRegistration} />
+        ) : (
+          <div className="text-center py-10 bg-muted rounded-2xl">
+            <p className="text-3xl mb-3">👥</p>
+            <p className="text-sm text-muted-foreground leading-relaxed px-4">
+              <Link
+                href={`/login?next=/tournaments/${tournament.id}`}
+                className="text-primary font-semibold underline"
+              >
+                Sign in
+              </Link>
+              {tournament.isRegistrationOpen ? (
+                <>
+                  {" "}and{" "}
+                  <Link
+                    href={`/login?next=/register/${tournament.id}`}
+                    className="text-primary font-semibold underline"
+                  >
+                    register your squad
+                  </Link>
+                  {" "}to see your slot details.
+                </>
+              ) : (
+                " to see your squad details."
+              )}
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

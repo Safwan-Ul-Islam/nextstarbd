@@ -1,8 +1,10 @@
+import { redirect } from "next/navigation";
 import { getLocale, getTranslations } from "next-intl/server";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { RegistrationForm } from "@/components/registration/RegistrationForm";
 import { Button } from "@/components/ui/Button";
+import { getSessionUser } from "@/lib/server/session";
 
 export default async function RegisterPage({
   params,
@@ -10,6 +12,12 @@ export default async function RegisterPage({
   params: Promise<{ tournamentId: string }>;
 }) {
   const { tournamentId } = await params;
+
+  const sessionUser = await getSessionUser();
+  if (!sessionUser) {
+    redirect(`/login?next=/register/${tournamentId}`);
+  }
+
   const locale = await getLocale();
   const t = await getTranslations("registration");
 
@@ -41,7 +49,7 @@ export default async function RegisterPage({
               {tournamentName}
             </p>
 
-            <RegistrationForm tournamentId={tournamentId} />
+            <RegistrationForm tournamentId={tournamentId} userId={sessionUser.uid} />
           </div>
         </div>
       </main>

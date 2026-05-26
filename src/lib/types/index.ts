@@ -30,9 +30,19 @@ export interface Tournament {
   updatedAt: Timestamp;
 }
 
+export interface UserProfile {
+  uid: string;
+  displayName: string | null;
+  email: string | null;
+  photoURL: string | null;
+  createdAt: Timestamp;
+  updatedAt: Timestamp;
+}
+
 export interface Registration {
   id: string;
   tournamentId: string;
+  userId: string;
   squadName: string;
   leaderName: string;
   leaderUid: string;

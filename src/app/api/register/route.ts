@@ -28,7 +28,11 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
-  const { tournamentId, squadName, leaderName, leaderUid, whatsapp, player2Uid, player3Uid, player4Uid } = body;
+  const { tournamentId, userId, squadName, leaderName, leaderUid, whatsapp, player2Uid, player3Uid, player4Uid } = body;
+
+  if (!userId?.trim()) {
+    return Response.json({ error: "Unauthorized" }, { status: 401 });
+  }
 
   if (!tournamentId || !squadName?.trim() || !leaderName?.trim() || !leaderUid?.trim() || !whatsapp?.trim() || !player2Uid?.trim() || !player3Uid?.trim() || !player4Uid?.trim()) {
     return Response.json({ error: "All fields are required" }, { status: 400 });
@@ -66,6 +70,7 @@ export async function POST(request: NextRequest) {
       const regRef = adminDb.collection("registrations").doc();
       tx.set(regRef, {
         tournamentId,
+        userId: userId.trim(),
         squadName: squadName.trim(),
         leaderName: leaderName.trim(),
         leaderUid: leaderUid.trim(),

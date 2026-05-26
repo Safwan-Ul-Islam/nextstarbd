@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
+import { useAuth } from "@/context/AuthContext";
 
 interface MobileMenuProps {
   open: boolean;
@@ -11,6 +12,7 @@ interface MobileMenuProps {
 
 export function MobileMenu({ open, onClose }: MobileMenuProps) {
   const t = useTranslations("nav");
+  const { user, signOut } = useAuth();
 
   useEffect(() => {
     if (open) {
@@ -65,14 +67,34 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
             ))}
           </ul>
         </nav>
-        <div className="px-6 py-5 border-t border-border">
-          <Link
-            href="/#upcoming-tournaments"
-            onClick={onClose}
-            className="block w-full text-center bg-primary hover:bg-primary-dark text-white font-semibold py-3 rounded-xl transition-colors"
-          >
-            Register Now
-          </Link>
+        <div className="px-6 py-5 border-t border-border space-y-3">
+          {user ? (
+            <>
+              <div className="flex items-center gap-3 px-1">
+                <div className="w-9 h-9 rounded-full bg-primary text-white flex items-center justify-center font-bold shrink-0">
+                  {(user.displayName?.[0] ?? user.email?.[0] ?? "?").toUpperCase()}
+                </div>
+                <div className="min-w-0">
+                  <p className="text-sm font-semibold text-foreground truncate">{user.displayName ?? user.email}</p>
+                  <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+                </div>
+              </div>
+              <button
+                onClick={async () => { await signOut(); onClose(); }}
+                className="block w-full text-center border border-border text-foreground font-semibold py-3 rounded-xl hover:bg-gray-50 transition-colors"
+              >
+                Sign Out
+              </button>
+            </>
+          ) : (
+            <Link
+              href="/login"
+              onClick={onClose}
+              className="block w-full text-center bg-primary hover:bg-primary-dark text-white font-semibold py-3 rounded-xl transition-colors"
+            >
+              Login with Google
+            </Link>
+          )}
         </div>
       </div>
     </>

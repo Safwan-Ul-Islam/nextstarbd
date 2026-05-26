@@ -35,7 +35,7 @@ export function UpcomingTournaments() {
 
                 {/* Entry strip */}
                 {t.isFree ? (
-                  <div className="flex items-center justify-center gap-1.5 py-1.5 px-3 bg-yellow-400 text-yellow-900 font-bold text-xs uppercase tracking-widest">
+                  <div className="flex items-center justify-center gap-1.5 py-1.5 px-3 font-bold text-xs uppercase tracking-widest" style={{ background: "linear-gradient(90deg,#BF8E00,#FFD700,#BF8E00)", color: "#3B2500" }}>
                     ✨ FREE ENTRY
                   </div>
                 ) : t.registrationFee ? (

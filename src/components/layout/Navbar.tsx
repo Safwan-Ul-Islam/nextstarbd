@@ -5,10 +5,12 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { MobileMenu } from "./MobileMenu";
 import { LanguageToggle } from "./LanguageToggle";
+import { useAuth } from "@/context/AuthContext";
 
 export function Navbar({ locale }: { locale: string }) {
   const t = useTranslations("nav");
   const [menuOpen, setMenuOpen] = useState(false);
+  const { user, signOut } = useAuth();
 
   const links = [
     { href: "/#upcoming-tournaments", label: t("tournaments") },
@@ -54,12 +56,27 @@ export function Navbar({ locale }: { locale: string }) {
             {/* Right side */}
             <div className="flex items-center gap-2">
               <LanguageToggle currentLocale={locale} />
-              <Link
-                href="/#upcoming-tournaments"
-                className="hidden sm:inline-flex items-center gap-1.5 bg-primary hover:bg-primary-dark text-white font-semibold px-4 py-2 rounded-xl text-sm transition-colors"
-              >
-                Register Now
-              </Link>
+
+              {user ? (
+                <div className="hidden sm:flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-sm font-bold shrink-0">
+                    {(user.displayName?.[0] ?? user.email?.[0] ?? "?").toUpperCase()}
+                  </div>
+                  <button
+                    onClick={signOut}
+                    className="text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    Sign Out
+                  </button>
+                </div>
+              ) : (
+                <Link
+                  href="/login"
+                  className="hidden sm:inline-flex items-center gap-1.5 bg-primary hover:bg-primary-dark text-white font-semibold px-4 py-2 rounded-xl text-sm transition-colors"
+                >
+                  Login
+                </Link>
+              )}
 
               {/* Mobile menu button */}
               <button

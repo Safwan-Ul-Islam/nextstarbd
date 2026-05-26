@@ -34,7 +34,7 @@ export function PreviousTournaments() {
               className="group flex-shrink-0 w-44 sm:w-auto bg-gray-50 border border-border rounded-xl overflow-hidden hover:shadow-md hover:border-primary/30 transition-all"
             >
               {/* Small banner */}
-              <div style={{ position: "relative", height: "80px", overflow: "hidden", backgroundColor: "#1f2937", flexShrink: 0 }}>
+              <div style={{ position: "relative", height: "68px", overflow: "hidden", backgroundColor: "#1f2937", flexShrink: 0 }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={resolveBannerUrl(t.bannerUrl, t.id)}
@@ -45,7 +45,7 @@ export function PreviousTournaments() {
 
                 {/* Completed badge */}
                 <div style={{ position: "absolute", top: 6, right: 6 }}>
-                  <span className="bg-gray-700/80 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                  <span style={{ fontSize: "10px" }} className="bg-gray-700/80 text-white font-bold px-1.5 py-0.5 rounded-full">
                     ✓ Done
                   </span>
                 </div>
@@ -53,7 +53,7 @@ export function PreviousTournaments() {
                 {/* Free/fee badge */}
                 {t.isFree && (
                   <div style={{ position: "absolute", top: 6, left: 6 }}>
-                    <span className="bg-yellow-400 text-yellow-900 text-xs font-bold px-2 py-0.5 rounded-full">
+                    <span className="text-xs font-bold px-2 py-0.5 rounded-full" style={{ background: "linear-gradient(90deg,#BF8E00,#FFD700,#BF8E00)", color: "#3B2500" }}>
                       FREE
                     </span>
                   </div>
@@ -61,20 +61,20 @@ export function PreviousTournaments() {
               </div>
 
               {/* Card body */}
-              <div className="p-2.5 space-y-1.5">
-                <p className="font-display text-sm text-foreground tracking-wide leading-tight line-clamp-2 group-hover:text-primary transition-colors">
+              <div className="p-2 space-y-1">
+                <p className="font-display text-xs text-foreground tracking-wide leading-tight line-clamp-2 group-hover:text-primary transition-colors">
                   {t.name}
                 </p>
 
                 <div className="flex items-center justify-between gap-1">
-                  <span className="text-xs font-bold text-primary">{t.prizePool}</span>
-                  <span className="text-xs font-semibold text-secondary bg-secondary/10 px-1.5 py-0.5 rounded-full">{t.mode}</span>
+                  <span className="text-xs font-bold text-primary leading-none">{t.prizePool}</span>
+                  <span style={{ fontSize: "10px" }} className="font-semibold text-secondary bg-secondary/10 px-1.5 py-0.5 rounded-full">{t.mode}</span>
                 </div>
 
-                <p className="text-xs text-muted-foreground">{formatDateOnly(t.startsAt)}</p>
+                <p style={{ fontSize: "10px" }} className="text-muted-foreground">{formatDateOnly(t.startsAt)}</p>
 
-                <div className="pt-1">
-                  <span className="block text-center text-xs font-bold text-primary bg-primary/8 border border-primary/20 rounded-lg py-1.5 group-hover:bg-primary group-hover:text-white transition-colors">
+                <div className="pt-0.5">
+                  <span style={{ fontSize: "10px" }} className="block text-center font-bold text-primary bg-primary/8 border border-primary/20 rounded-lg py-1 group-hover:bg-primary group-hover:text-white transition-colors">
                     View Results →
                   </span>
                 </div>

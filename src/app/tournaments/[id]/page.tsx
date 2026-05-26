@@ -8,7 +8,8 @@ import { CountdownTimer } from "@/components/tournaments/CountdownTimer";
 import { serialize } from "@/lib/utils/serialize";
 import { formatDateOnly, formatTimeOnly } from "@/lib/utils/formatDate";
 import { resolveBannerUrl } from "@/lib/utils/bannerUrl";
-import type { Tournament, TournamentStatus } from "@/lib/types";
+import { getSessionUser } from "@/lib/server/session";
+import type { Tournament, Registration, TournamentStatus } from "@/lib/types";
 import Link from "next/link";
 
 const statusStyle: Record<TournamentStatus, { label: string; color: string }> = {
@@ -27,11 +28,30 @@ export default async function TournamentPage({
   const locale = await getLocale();
 
   let tournament: Tournament | null = null;
+  let myRegistration: Registration | null = null;
+  let isLoggedIn = false;
+
   try {
     const { adminDb } = await import("@/lib/firebase/admin");
     const doc = await adminDb.collection("tournaments").doc(id).get();
     if (doc.exists) {
       tournament = serialize({ id: doc.id, ...doc.data() } as unknown as Tournament);
+    }
+
+    if (tournament) {
+      const sessionUser = await getSessionUser();
+      if (sessionUser) {
+        isLoggedIn = true;
+        const snap = await adminDb
+          .collection("registrations")
+          .where("tournamentId", "==", id)
+          .where("userId", "==", sessionUser.uid)
+          .limit(1)
+          .get();
+        if (!snap.empty) {
+          myRegistration = serialize({ id: snap.docs[0].id, ...snap.docs[0].data() } as unknown as Registration);
+        }
+      }
     }
   } catch {}
 
@@ -47,7 +67,7 @@ export default async function TournamentPage({
 
         {/* Entry strip */}
         {tournament.isFree ? (
-          <div className="flex items-center justify-center gap-2 py-2.5 px-4 bg-yellow-400 text-yellow-900 font-bold text-sm uppercase tracking-widest">
+          <div className="flex items-center justify-center gap-2 py-2.5 px-4 font-bold text-sm uppercase tracking-widest" style={{ background: "linear-gradient(90deg,#BF8E00,#FFD700,#BF8E00)", color: "#3B2500" }}>
             ✨ FREE ENTRY — No Registration Fee
           </div>
         ) : tournament.registrationFee ? (
@@ -115,9 +135,9 @@ export default async function TournamentPage({
                     {formatDateOnly(tournament.startsAt)}
                   </p>
                 </div>
-                {canRegister && (
+                {canRegister && !myRegistration && (
                   <Link
-                    href={`/register/${id}`}
+                    href={isLoggedIn ? `/register/${id}` : `/login?next=/register/${id}`}
                     className="bg-primary hover:bg-primary-dark text-white font-bold px-5 py-2 rounded-xl text-sm transition-colors"
                   >
                     Register Squad →
@@ -141,7 +161,7 @@ export default async function TournamentPage({
 
         {/* Dashboard content */}
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
-          <TournamentDashboard tournament={tournament} />
+          <TournamentDashboard tournament={tournament} myRegistration={myRegistration} />
         </div>
       </main>
       <Footer />

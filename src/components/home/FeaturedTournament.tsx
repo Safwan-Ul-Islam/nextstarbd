@@ -18,7 +18,7 @@ function ActiveTournamentCard({ tournament }: { tournament: Tournament }) {
     <div className="rounded-3xl border-2 border-border overflow-hidden shadow-sm bg-white">
       {/* Entry strip — above banner */}
       {tournament.isFree ? (
-        <div className="flex items-center justify-center gap-2 py-2 px-4 bg-yellow-400 text-yellow-900 font-bold text-xs uppercase tracking-widest">
+        <div className="flex items-center justify-center gap-2 py-2 px-4 font-bold text-xs uppercase tracking-widest" style={{ background: "linear-gradient(90deg,#BF8E00,#FFD700,#BF8E00)", color: "#3B2500" }}>
           ✨ FREE ENTRY — No Registration Fee
         </div>
       ) : tournament.registrationFee ? (
