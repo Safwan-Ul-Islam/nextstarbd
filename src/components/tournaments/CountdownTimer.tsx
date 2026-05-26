@@ -6,7 +6,7 @@ import { useCountdown } from "@/lib/hooks/useCountdown";
 function Segment({ value, label }: { value: number; label: string }) {
   return (
     <div className="flex flex-col items-center">
-      <div className="bg-gray-900 text-white font-display text-2xl sm:text-3xl w-12 sm:w-14 h-12 sm:h-14 rounded-xl flex items-center justify-center">
+      <div className="bg-primary text-white font-display text-2xl sm:text-3xl w-12 sm:w-14 h-12 sm:h-14 rounded-xl flex items-center justify-center">
         {String(value).padStart(2, "0")}
       </div>
       <span className="text-xs text-muted-foreground mt-1 font-medium uppercase tracking-wide">

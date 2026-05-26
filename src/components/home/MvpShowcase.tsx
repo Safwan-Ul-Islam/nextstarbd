@@ -6,7 +6,7 @@ export function MvpShowcase({ players }: { players: MvpPlayer[] }) {
   if (players.length === 0) return null;
 
   return (
-    <section className="py-16 bg-muted">
+    <section className="py-16 bg-gray-50 border-t border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-10">
           <h2 className="font-display text-4xl sm:text-5xl text-foreground tracking-wide mb-2">

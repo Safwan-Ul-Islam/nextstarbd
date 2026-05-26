@@ -6,7 +6,7 @@ export function SponsorsSection({ sponsors }: { sponsors: Sponsor[] }) {
   if (active.length === 0) return null;
 
   return (
-    <section className="py-12 bg-muted border-t border-border">
+    <section className="py-12 bg-white border-t border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <p className="text-center text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-8">
           Our Sponsors &amp; Partners

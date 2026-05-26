@@ -3,19 +3,19 @@ import { notFound } from "next/navigation";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { TournamentDashboard } from "@/components/tournaments/TournamentDashboard";
-import { Button } from "@/components/ui/Button";
-import { Badge } from "@/components/ui/Badge";
 import { SlotProgressBar } from "@/components/tournaments/SlotProgressBar";
+import { CountdownTimer } from "@/components/tournaments/CountdownTimer";
+import { serialize } from "@/lib/utils/serialize";
+import { formatTournamentDate } from "@/lib/utils/formatDate";
+import { resolveBannerUrl } from "@/lib/utils/bannerUrl";
 import type { Tournament, TournamentStatus } from "@/lib/types";
+import Link from "next/link";
 
-const statusBadge: Record<
-  TournamentStatus,
-  { label: string; variant: "info" | "danger" | "neutral" | "warning" }
-> = {
-  upcoming: { label: "Upcoming", variant: "info" },
-  ongoing: { label: "LIVE", variant: "danger" },
-  completed: { label: "Completed", variant: "neutral" },
-  cancelled: { label: "Cancelled", variant: "warning" },
+const statusStyle: Record<TournamentStatus, { label: string; color: string }> = {
+  upcoming:  { label: "Upcoming",  color: "bg-secondary text-white" },
+  ongoing:   { label: "LIVE",      color: "bg-primary text-white" },
+  completed: { label: "Completed", color: "bg-gray-500 text-white" },
+  cancelled: { label: "Cancelled", color: "bg-amber-500 text-white" },
 };
 
 export default async function TournamentPage({
@@ -31,68 +31,91 @@ export default async function TournamentPage({
     const { adminDb } = await import("@/lib/firebase/admin");
     const doc = await adminDb.collection("tournaments").doc(id).get();
     if (doc.exists) {
-      tournament = { id: doc.id, ...doc.data() } as unknown as Tournament;
+      tournament = serialize({ id: doc.id, ...doc.data() } as unknown as Tournament);
     }
   } catch {}
 
   if (!tournament) notFound();
 
-  const s = statusBadge[tournament.status];
-  const canRegister =
-    tournament.isRegistrationOpen && tournament.status === "upcoming";
+  const s = statusStyle[tournament.status];
+  const canRegister = tournament.isRegistrationOpen;
 
   return (
     <>
       <Navbar locale={locale} />
-      <main className="min-h-screen bg-muted">
-        {/* Header */}
-        <div className="bg-gray-900 text-white py-10">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="mb-4">
-              <Button href="/" variant="ghost" size="sm" className="text-white/70 hover:text-white border-white/20">
-                ← Home
-              </Button>
-            </div>
-            <div className="flex flex-col sm:flex-row sm:items-start gap-4">
-              <div className="flex-1">
-                <div className="flex items-center gap-2 mb-2">
-                  <Badge variant={s.variant}>
-                    {s.label === "LIVE" && (
-                      <span className="w-1.5 h-1.5 bg-current rounded-full animate-pulse mr-1" />
-                    )}
-                    {s.label}
-                  </Badge>
-                </div>
-                <h1 className="font-display text-3xl sm:text-4xl tracking-wide mb-1">
-                  {tournament.name}
-                </h1>
-                <p className="text-gray-400 text-sm">{tournament.description}</p>
-              </div>
-              <div className="flex flex-col gap-2 items-start sm:items-end shrink-0">
-                <div className="text-right">
-                  <p className="text-xs text-gray-400 uppercase tracking-wide">Prize Pool</p>
-                  <p className="font-display text-3xl text-secondary">{tournament.prizePool}</p>
-                </div>
-                {canRegister && (
-                  <Button href={`/register/${id}`} size="sm">
-                    Register Squad
-                  </Button>
-                )}
-              </div>
+      <main className="min-h-screen bg-gray-50">
+
+        {/* Banner header */}
+        <div
+          className="relative h-56 sm:h-72 overflow-hidden"
+          style={{
+            backgroundImage: `url(${resolveBannerUrl(tournament.bannerUrl, tournament.id)})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundColor: "#1f2937",
+          }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
+
+          {/* Back link */}
+          <div className="absolute top-4 left-4">
+            <Link href="/" className="inline-flex items-center gap-1.5 text-white/80 hover:text-white text-sm font-medium transition-colors">
+              ← Home
+            </Link>
+          </div>
+
+          {/* Status + name */}
+          <div className="absolute bottom-5 left-5 right-5">
+            <span className={`inline-block text-xs font-bold px-3 py-1 rounded-full mb-2 ${s.color}`}>
+              {s.label === "LIVE" ? "🔴 LIVE NOW" : s.label}
+            </span>
+            <h1 className="font-display text-3xl sm:text-4xl text-white tracking-wide leading-tight drop-shadow-lg">
+              {tournament.name}
+            </h1>
+          </div>
+        </div>
+
+        {/* Info bar */}
+        <div className="bg-white border-b border-border">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4">
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="bg-primary/8 text-primary border border-primary/20 text-xs font-bold px-3 py-1.5 rounded-full">
+                🏆 {tournament.prizePool}
+              </span>
+              <span className="bg-gray-100 text-foreground text-xs font-semibold px-3 py-1.5 rounded-full">
+                ⚔️ {tournament.mode}
+              </span>
+              <span className="bg-gray-100 text-foreground text-xs font-semibold px-3 py-1.5 rounded-full">
+                📅 {formatTournamentDate(tournament.startsAt)}
+              </span>
+              {canRegister && (
+                <Link
+                  href={`/register/${id}`}
+                  className="ml-auto bg-primary hover:bg-primary-dark text-white font-bold px-5 py-2 rounded-xl text-sm transition-colors"
+                >
+                  Register Squad →
+                </Link>
+              )}
             </div>
 
-            <div className="mt-6 max-w-md">
+            <div className="mt-3 max-w-sm">
               <SlotProgressBar
                 filled={tournament.registeredCount}
                 max={tournament.maxSlots}
                 waitlisted={tournament.waitlistCount}
               />
             </div>
+
+            {tournament.status === "upcoming" && (
+              <div className="mt-3">
+                <CountdownTimer targetDate={tournament.startsAt.toDate()} />
+              </div>
+            )}
           </div>
         </div>
 
         {/* Dashboard content */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
           <TournamentDashboard tournament={tournament} />
         </div>
       </main>

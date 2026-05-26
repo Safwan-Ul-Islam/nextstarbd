@@ -1,4 +1,5 @@
 import { WinnersAdminPanel } from "@/components/admin/WinnersAdminPanel";
+import { serialize } from "@/lib/utils/serialize";
 import type { Winner, Tournament } from "@/lib/types";
 
 async function getData() {
@@ -7,10 +8,10 @@ async function getData() {
     adminDb.collection("winners").orderBy("tournamentDate", "desc").get(),
     adminDb.collection("tournaments").where("status", "==", "completed").get(),
   ]);
-  return {
+  return serialize({
     winners: wSnap.docs.map((d) => ({ id: d.id, ...d.data() } as unknown as Winner)),
     tournaments: tSnap.docs.map((d) => ({ id: d.id, ...d.data() } as unknown as Tournament)),
-  };
+  });
 }
 
 export default async function AdminWinnersPage() {

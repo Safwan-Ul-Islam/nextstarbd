@@ -2,67 +2,52 @@ import { getTranslations, getLocale } from "next-intl/server";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { HeroSection } from "@/components/home/HeroSection";
+import { FeaturedTournament } from "@/components/home/FeaturedTournament";
 import { UpcomingTournaments } from "@/components/home/UpcomingTournaments";
-import { AnnouncementsFeed } from "@/components/home/AnnouncementsFeed";
-import { HallOfFamePreview } from "@/components/home/HallOfFamePreview";
-import { MvpShowcase } from "@/components/home/MvpShowcase";
-import { SponsorsSection } from "@/components/home/SponsorsSection";
+import { PreviousHighlights } from "@/components/home/PreviousHighlights";
 import { CommunityLinks } from "@/components/home/CommunityLinks";
-import type { Winner, MvpPlayer, Sponsor } from "@/lib/types";
+import { serialize } from "@/lib/utils/serialize";
+import type { Winner, MvpPlayer } from "@/lib/types";
 
 async function getHomeData() {
   try {
     const { adminDb } = await import("@/lib/firebase/admin");
-    const { FieldValue } = await import("firebase-admin/firestore");
 
-    const [winnersSnap, mvpSnap, sponsorsSnap] = await Promise.all([
-      adminDb
-        .collection("winners")
-        .orderBy("tournamentDate", "desc")
-        .limit(6)
-        .get(),
-      adminDb
-        .collection("mvpPlayers")
-        .orderBy("tournamentDate", "desc")
-        .limit(6)
-        .get(),
-      adminDb
-        .collection("sponsors")
-        .where("isActive", "==", true)
-        .orderBy("displayOrder", "asc")
-        .get(),
+    const [winnersSnap, mvpSnap] = await Promise.all([
+      adminDb.collection("winners").orderBy("tournamentDate", "desc").limit(12).get(),
+      adminDb.collection("mvpPlayers").orderBy("tournamentDate", "desc").limit(8).get(),
     ]);
 
-    return {
+    return serialize({
       winners: winnersSnap.docs.map((d) => ({ id: d.id, ...d.data() } as unknown as Winner)),
       mvpPlayers: mvpSnap.docs.map((d) => ({ id: d.id, ...d.data() } as unknown as MvpPlayer)),
-      sponsors: sponsorsSnap.docs.map((d) => ({ id: d.id, ...d.data() } as unknown as Sponsor)),
-    };
+    });
   } catch {
-    return { winners: [], mvpPlayers: [], sponsors: [] };
+    return { winners: [], mvpPlayers: [] };
   }
 }
 
 export default async function HomePage() {
   const t = await getTranslations("hero");
   const locale = await getLocale();
-  const { winners, mvpPlayers, sponsors } = await getHomeData();
+  const { winners, mvpPlayers } = await getHomeData();
 
   return (
     <>
       <Navbar locale={locale} />
       <main>
-        <HeroSection
-          title={t("title")}
-          subtitle={t("subtitle")}
-          ctaRegister={t("cta_register")}
-          ctaWinners={t("cta_winners")}
-        />
+        {/* Slim hero */}
+        <HeroSection subtitle={t("subtitle")} />
+
+        {/* Section 1 — Current tournament (big, registration CTA) */}
+        <FeaturedTournament />
+
+        {/* Section 2 — Other upcoming tournaments */}
         <UpcomingTournaments />
-        <AnnouncementsFeed />
-        <HallOfFamePreview winners={winners} />
-        <MvpShowcase players={mvpPlayers} />
-        <SponsorsSection sponsors={sponsors} />
+
+        {/* Section 3 — Previous champions + MVP carousel */}
+        <PreviousHighlights winners={winners} mvpPlayers={mvpPlayers} />
+
         <CommunityLinks />
       </main>
       <Footer />

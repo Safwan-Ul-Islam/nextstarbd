@@ -2,14 +2,8 @@ import type { Timestamp } from "firebase/firestore";
 
 export type TournamentStatus = "upcoming" | "ongoing" | "completed" | "cancelled";
 export type AnnouncementType = "info" | "warning" | "roomInfo" | "result";
-export type RegistrationStatus = "confirmed" | "waitlisted" | "removed";
+export type ApprovalStatus = "pending" | "approved" | "rejected";
 export type SponsorSlot = "hero" | "banner" | "sidebar";
-
-export interface Player {
-  ign: string;
-  uid: string;
-  isCaptain: boolean;
-}
 
 export interface Tournament {
   id: string;
@@ -36,11 +30,16 @@ export interface Registration {
   id: string;
   tournamentId: string;
   squadName: string;
-  players: Player[];
-  contactNumber: string;
+  leaderName: string;
+  leaderUid: string;
+  whatsapp: string;
+  player2Uid: string;
+  player3Uid: string;
+  player4Uid: string;
+  allUids: string[];
   slotNumber: number | null;
   isWaitlisted: boolean;
-  status: RegistrationStatus;
+  approvalStatus: ApprovalStatus;
   registeredAt: Timestamp;
   updatedAt: Timestamp;
 }
@@ -93,13 +92,4 @@ export interface Sponsor {
   displayOrder: number;
   isActive: boolean;
   updatedAt: Timestamp;
-}
-
-export interface RegistrationFormData {
-  squadName: string;
-  contactNumber: string;
-  players: {
-    ign: string;
-    uid: string;
-  }[];
 }

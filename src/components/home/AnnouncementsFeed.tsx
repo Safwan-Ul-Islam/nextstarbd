@@ -12,10 +12,10 @@ export function AnnouncementsFeed() {
   if (!loading && announcements.length === 0) return null;
 
   return (
-    <section className="py-12 bg-muted">
+    <section className="py-12 bg-gray-50 border-t border-border">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-3 mb-6">
-          <span className="w-2.5 h-2.5 bg-primary rounded-full animate-pulse" />
+          <span className="w-2.5 h-2.5 bg-secondary rounded-full animate-pulse" />
           <h2 className="font-display text-3xl text-foreground tracking-wide">
             {t("latest")}
           </h2>

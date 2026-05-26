@@ -1,4 +1,5 @@
 import { AnnouncementComposer } from "@/components/admin/AnnouncementComposer";
+import { serialize } from "@/lib/utils/serialize";
 import type { Announcement, Tournament } from "@/lib/types";
 import { timeAgo } from "@/lib/utils/formatDate";
 
@@ -8,10 +9,10 @@ async function getData() {
     adminDb.collection("announcements").orderBy("createdAt", "desc").limit(30).get(),
     adminDb.collection("tournaments").orderBy("startsAt", "desc").limit(20).get(),
   ]);
-  return {
+  return serialize({
     announcements: annSnap.docs.map((d) => ({ id: d.id, ...d.data() } as unknown as Announcement)),
     tournaments: tSnap.docs.map((d) => ({ id: d.id, ...d.data() } as unknown as Tournament)),
-  };
+  });
 }
 
 export default async function AdminAnnouncementsPage() {

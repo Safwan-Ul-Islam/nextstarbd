@@ -37,23 +37,34 @@ export function SquadList({ tournamentId }: { tournamentId: string }) {
         </h4>
         <div className="space-y-2">
           {confirmed.map((reg) => (
-            <div
-              key={reg.id}
-              className="flex items-start gap-3 bg-secondary-light border border-secondary/20 rounded-xl px-4 py-3"
-            >
+            <div key={reg.id} className="flex items-start gap-3 bg-secondary-light border border-secondary/20 rounded-xl px-4 py-3">
               <div className="w-8 h-8 rounded-full bg-secondary text-white font-display text-lg flex items-center justify-center shrink-0">
                 {reg.slotNumber}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="font-semibold text-foreground truncate">{reg.squadName}</p>
-                <div className="flex flex-wrap gap-1.5 mt-1">
-                  {reg.players.map((p) => (
-                    <span key={p.uid} className="text-xs text-muted-foreground bg-white px-2 py-0.5 rounded-full">
-                      {p.ign}
-                      {p.isCaptain && " ©"}
+                <p className="font-semibold text-foreground">{reg.squadName}</p>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Leader: <span className="font-medium">{reg.leaderName}</span>
+                </p>
+                <div className="flex flex-wrap gap-1.5 mt-1.5">
+                  {[reg.leaderUid, reg.player2Uid, reg.player3Uid, reg.player4Uid].map((uid, i) => (
+                    <span key={uid} className="text-xs text-muted-foreground bg-white px-2 py-0.5 rounded-full">
+                      {i === 0 ? "Leader" : `P${i + 1}`}: {uid}
                     </span>
                   ))}
                 </div>
+              </div>
+              {/* Approval badge */}
+              <div className="shrink-0">
+                {reg.approvalStatus === "approved" && (
+                  <span className="text-xs font-bold text-secondary bg-secondary-light border border-secondary/30 px-2 py-1 rounded-full">✅</span>
+                )}
+                {reg.approvalStatus === "pending" && (
+                  <span className="text-xs font-bold text-amber-600 bg-amber-50 border border-amber-200 px-2 py-1 rounded-full">⏳</span>
+                )}
+                {reg.approvalStatus === "rejected" && (
+                  <span className="text-xs font-bold text-primary bg-primary-light border border-primary/30 px-2 py-1 rounded-full">❌</span>
+                )}
               </div>
             </div>
           ))}
@@ -68,22 +79,13 @@ export function SquadList({ tournamentId }: { tournamentId: string }) {
           </h4>
           <div className="space-y-2">
             {waitlisted.map((reg, i) => (
-              <div
-                key={reg.id}
-                className="flex items-start gap-3 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3"
-              >
+              <div key={reg.id} className="flex items-start gap-3 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3">
                 <div className="w-8 h-8 rounded-full bg-amber-400 text-white font-bold text-sm flex items-center justify-center shrink-0">
                   W{i + 1}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-semibold text-foreground truncate">{reg.squadName}</p>
-                  <div className="flex flex-wrap gap-1.5 mt-1">
-                    {reg.players.map((p) => (
-                      <span key={p.uid} className="text-xs text-muted-foreground bg-white px-2 py-0.5 rounded-full">
-                        {p.ign}
-                      </span>
-                    ))}
-                  </div>
+                  <p className="font-semibold text-foreground">{reg.squadName}</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">{reg.leaderName} · 📱 {reg.whatsapp}</p>
                 </div>
               </div>
             ))}

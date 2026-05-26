@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { ManageTournamentPanel } from "@/components/admin/ManageTournamentPanel";
+import { serialize } from "@/lib/utils/serialize";
 import type { Tournament, Registration } from "@/lib/types";
 
 async function getData(id: string) {
@@ -10,18 +11,16 @@ async function getData(id: string) {
     adminDb
       .collection("registrations")
       .where("tournamentId", "==", id)
-      .where("status", "!=", "removed")
-      .orderBy("status")
       .orderBy("registeredAt", "asc")
       .get(),
   ]);
 
   if (!tournamentDoc.exists) return null;
 
-  return {
+  return serialize({
     tournament: { id: tournamentDoc.id, ...tournamentDoc.data() } as unknown as Tournament,
     registrations: regsSnap.docs.map((d) => ({ id: d.id, ...d.data() } as unknown as Registration)),
-  };
+  });
 }
 
 export default async function ManageTournamentPage({

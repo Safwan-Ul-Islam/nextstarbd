@@ -30,6 +30,11 @@ export async function POST(request: NextRequest) {
 
     const { adminDb } = await import("@/lib/firebase/admin");
 
+    // Count existing tournaments to determine which banner to use (cycles 1–5)
+    const countSnap = await adminDb.collection("tournaments").count().get();
+    const bannerIndex = (countSnap.data().count % 5) + 1;
+    const bannerUrl = `/banners/ff${bannerIndex}.png`;
+
     await adminDb.collection("tournaments").add({
       name,
       description: description || "",
@@ -42,7 +47,7 @@ export async function POST(request: NextRequest) {
       isRegistrationOpen: true,
       roomId: null,
       roomPassword: null,
-      bannerUrl: null,
+      bannerUrl,
       registeredCount: 0,
       waitlistCount: 0,
       allUids: [],
