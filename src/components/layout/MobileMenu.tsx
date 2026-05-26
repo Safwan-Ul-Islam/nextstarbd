@@ -43,7 +43,11 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
       />
       <div className="fixed top-0 right-0 h-full w-72 bg-white z-50 shadow-2xl flex flex-col">
         <div className="flex items-center justify-between px-6 py-5 border-b border-border">
-          <span className="font-display text-2xl text-primary tracking-wide">nextstarBD</span>
+          <div className="flex items-center gap-2">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/banners/lnsbd.png" alt="nextstarBD logo" style={{ height: "38px", width: "auto", display: "block" }} />
+            <span className="font-display text-2xl text-foreground tracking-wide">nextstar<span className="text-primary">BD</span></span>
+          </div>
           <button
             onClick={onClose}
             className="text-muted-foreground hover:text-foreground text-2xl"
@@ -92,7 +96,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
               onClick={onClose}
               className="block w-full text-center bg-primary hover:bg-primary-dark text-white font-semibold py-3 rounded-xl transition-colors"
             >
-              Login with Google
+              Login
             </Link>
           )}
         </div>

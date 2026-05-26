@@ -83,12 +83,13 @@ function LoginForm() {
 
         {/* Logo */}
         <div className="text-center mb-7">
-          <div className="inline-flex items-center justify-center w-11 h-11 bg-primary rounded-xl mb-3">
-            <span className="text-white font-display text-xl font-bold">N</span>
+          <div className="flex items-center justify-center gap-2 mb-1">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/banners/lnsbd.png" alt="nextstarBD logo" style={{ height: "52px", width: "auto", display: "block" }} />
+            <h1 className="font-display text-3xl text-foreground tracking-wide">
+              nextstar<span className="text-primary">BD</span>
+            </h1>
           </div>
-          <h1 className="font-display text-3xl text-foreground tracking-wide">
-            nextstar<span className="text-primary">BD</span>
-          </h1>
           <p className="text-muted-foreground text-sm mt-1">
             {mode === "signin" && "Sign in to register for tournaments"}
             {mode === "signup" && "Create your player account"}

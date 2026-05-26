@@ -27,9 +27,8 @@ export function AdminSidebar() {
       {/* Logo */}
       <div className="px-5 py-5 border-b border-gray-800">
         <Link href="/" className="flex items-center gap-2">
-          <div className="w-7 h-7 bg-primary rounded-lg flex items-center justify-center">
-            <span className="font-display text-base">N</span>
-          </div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/banners/lnsbd.png" alt="nextstarBD logo" style={{ height: "38px", width: "auto", display: "block" }} />
           <span className="font-display text-xl tracking-wide">
             nextstar<span className="text-primary">BD</span>
           </span>

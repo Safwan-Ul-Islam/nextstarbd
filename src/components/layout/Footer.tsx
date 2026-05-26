@@ -13,9 +13,8 @@ export function Footer() {
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2 mb-3">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-white font-display text-lg">N</span>
-              </div>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/banners/lnsbd.png" alt="nextstarBD logo" style={{ height: "42px", width: "auto", display: "block" }} />
               <span className="font-display text-2xl tracking-wide text-foreground">
                 nextstar<span className="text-primary">BD</span>
               </span>

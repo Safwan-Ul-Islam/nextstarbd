@@ -7,10 +7,9 @@ export function HeroSection({ subtitle }: { subtitle: string }) {
 
       <div className="relative max-w-3xl mx-auto px-4">
         {/* Logo mark */}
-        <div className="inline-flex items-center gap-2 mb-4">
-          <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-sm">
-            <span className="text-white font-display text-2xl">N</span>
-          </div>
+        <div className="inline-flex items-center gap-3 mb-4">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/banners/lnsbd.png" alt="nextstarBD logo" style={{ height: "64px", width: "auto", display: "block" }} />
           <span className="font-display text-4xl sm:text-5xl tracking-wide text-foreground">
             nextstar<span className="text-primary">BD</span>
           </span>

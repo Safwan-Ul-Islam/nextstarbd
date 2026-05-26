@@ -43,13 +43,14 @@ export default function AdminLoginPage() {
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-14 h-14 bg-primary rounded-2xl mb-3">
-            <span className="text-white font-display text-3xl">N</span>
+          <div className="flex items-center justify-center gap-3 mb-1">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/banners/lnsbd.png" alt="nextstarBD logo" style={{ height: "60px", width: "auto", display: "block" }} />
+            <h1 className="font-display text-4xl text-white tracking-wide">
+              nextstar<span className="text-primary">BD</span>
+            </h1>
           </div>
-          <h1 className="font-display text-4xl text-white tracking-wide">
-            nextstar<span className="text-primary">BD</span>
-          </h1>
-          <p className="text-gray-400 text-sm mt-1">Admin Panel</p>
+          <p className="text-gray-400 text-sm mt-2">Admin Panel</p>
         </div>
 
         <div className="bg-white rounded-2xl p-8 shadow-2xl">
