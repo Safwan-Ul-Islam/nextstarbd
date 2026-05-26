@@ -9,11 +9,15 @@ export function CreateTournamentForm() {
   const router = useRouter();
   const { showToast } = useToast();
   const [loading, setLoading] = useState(false);
+  const [isFree, setIsFree] = useState(true);
   const [form, setForm] = useState({
     name: "",
     description: "",
     mode: "Squad (BR)",
     prizePool: "",
+    firstPrize: "",
+    secondPrize: "",
+    registrationFee: "",
     startsAt: "",
     registrationDeadline: "",
   });
@@ -29,11 +33,12 @@ export function CreateTournamentForm() {
       const res = await fetch("/api/admin/tournaments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, isFree }),
       });
       if (!res.ok) throw new Error("Failed");
       showToast("Tournament created!", "success");
-      setForm({ name: "", description: "", mode: "Squad (BR)", prizePool: "", startsAt: "", registrationDeadline: "" });
+      setIsFree(true);
+      setForm({ name: "", description: "", mode: "Squad (BR)", prizePool: "", firstPrize: "", secondPrize: "", registrationFee: "", startsAt: "", registrationDeadline: "" });
       router.refresh();
     } catch {
       showToast("Failed to create tournament", "error");
@@ -81,13 +86,62 @@ export function CreateTournamentForm() {
       </div>
 
       <div>
-        <label className="block text-sm font-semibold mb-1">Prize Pool *</label>
+        <label className="block text-sm font-semibold mb-1">Total Prize Pool *</label>
         <input
           required
           value={form.prizePool}
           onChange={set("prizePool")}
           className="w-full border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-primary"
           placeholder="৳5,000"
+        />
+      </div>
+
+      {/* Free / Paid toggle */}
+      <div className="sm:col-span-2">
+        <label className="flex items-center gap-3 cursor-pointer select-none">
+          <div
+            onClick={() => setIsFree(v => !v)}
+            className={`relative w-11 h-6 rounded-full transition-colors ${isFree ? "bg-yellow-400" : "bg-gray-300"}`}
+          >
+            <span className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${isFree ? "translate-x-5" : "translate-x-0"}`} />
+          </div>
+          <span className="font-semibold text-sm">
+            {isFree ? "✨ Free Entry (no registration fee)" : "Paid Entry"}
+          </span>
+        </label>
+      </div>
+
+      {/* Registration fee — shown only when paid */}
+      {!isFree && (
+        <div className="sm:col-span-2">
+          <label className="block text-sm font-semibold mb-1">Registration Fee *</label>
+          <input
+            required
+            value={form.registrationFee}
+            onChange={set("registrationFee")}
+            className="w-full border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-primary"
+            placeholder="৳50"
+          />
+        </div>
+      )}
+
+      <div>
+        <label className="block text-sm font-semibold mb-1">1st Prize</label>
+        <input
+          value={form.firstPrize}
+          onChange={set("firstPrize")}
+          className="w-full border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-primary"
+          placeholder="৳3,000"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-semibold mb-1">2nd Prize</label>
+        <input
+          value={form.secondPrize}
+          onChange={set("secondPrize")}
+          className="w-full border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-primary"
+          placeholder="৳1,500"
         />
       </div>
 

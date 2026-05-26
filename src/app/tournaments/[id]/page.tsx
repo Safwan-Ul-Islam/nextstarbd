@@ -6,7 +6,7 @@ import { TournamentDashboard } from "@/components/tournaments/TournamentDashboar
 import { SlotProgressBar } from "@/components/tournaments/SlotProgressBar";
 import { CountdownTimer } from "@/components/tournaments/CountdownTimer";
 import { serialize } from "@/lib/utils/serialize";
-import { formatTournamentDate } from "@/lib/utils/formatDate";
+import { formatDateOnly, formatTimeOnly } from "@/lib/utils/formatDate";
 import { resolveBannerUrl } from "@/lib/utils/bannerUrl";
 import type { Tournament, TournamentStatus } from "@/lib/types";
 import Link from "next/link";
@@ -45,27 +45,36 @@ export default async function TournamentPage({
       <Navbar locale={locale} />
       <main className="min-h-screen bg-gray-50">
 
+        {/* Entry strip */}
+        {tournament.isFree ? (
+          <div className="flex items-center justify-center gap-2 py-2.5 px-4 bg-yellow-400 text-yellow-900 font-bold text-sm uppercase tracking-widest">
+            ✨ FREE ENTRY — No Registration Fee
+          </div>
+        ) : tournament.registrationFee ? (
+          <div className="flex items-center justify-center gap-2 py-2.5 px-4 bg-gray-800 text-white font-bold text-sm uppercase tracking-widest">
+            Entry Fee: {tournament.registrationFee}
+          </div>
+        ) : null}
+
         {/* Banner header */}
-        <div
-          className="relative h-56 sm:h-72 overflow-hidden"
-          style={{
-            backgroundImage: `url(${resolveBannerUrl(tournament.bannerUrl, tournament.id)})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundColor: "#1f2937",
-          }}
-        >
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
+        <div style={{ position: "relative", height: "260px", overflow: "hidden", backgroundColor: "#1f2937" }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={resolveBannerUrl(tournament.bannerUrl, tournament.id)}
+            alt={tournament.name}
+            style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+          />
+          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 50%, transparent 100%)" }} />
 
           {/* Back link */}
-          <div className="absolute top-4 left-4">
+          <div style={{ position: "absolute", top: 16, left: 16 }}>
             <Link href="/" className="inline-flex items-center gap-1.5 text-white/80 hover:text-white text-sm font-medium transition-colors">
               ← Home
             </Link>
           </div>
 
           {/* Status + name */}
-          <div className="absolute bottom-5 left-5 right-5">
+          <div style={{ position: "absolute", bottom: 20, left: 20, right: 20 }}>
             <span className={`inline-block text-xs font-bold px-3 py-1 rounded-full mb-2 ${s.color}`}>
               {s.label === "LIVE" ? "🔴 LIVE NOW" : s.label}
             </span>
@@ -77,40 +86,56 @@ export default async function TournamentPage({
 
         {/* Info bar */}
         <div className="bg-white border-b border-border">
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4">
-            <div className="flex flex-wrap items-center gap-3">
-              <span className="bg-primary/8 text-primary border border-primary/20 text-xs font-bold px-3 py-1.5 rounded-full">
-                🏆 {tournament.prizePool}
-              </span>
-              <span className="bg-gray-100 text-foreground text-xs font-semibold px-3 py-1.5 rounded-full">
-                ⚔️ {tournament.mode}
-              </span>
-              <span className="bg-gray-100 text-foreground text-xs font-semibold px-3 py-1.5 rounded-full">
-                📅 {formatTournamentDate(tournament.startsAt)}
-              </span>
-              {canRegister && (
-                <Link
-                  href={`/register/${id}`}
-                  className="ml-auto bg-primary hover:bg-primary-dark text-white font-bold px-5 py-2 rounded-xl text-sm transition-colors"
-                >
-                  Register Squad →
-                </Link>
-              )}
-            </div>
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 py-5 space-y-4">
 
-            <div className="mt-3 max-w-sm">
-              <SlotProgressBar
-                filled={tournament.registeredCount}
-                max={tournament.maxSlots}
-                waitlisted={tournament.waitlistCount}
-              />
-            </div>
-
-            {tournament.status === "upcoming" && (
-              <div className="mt-3">
-                <CountdownTimer targetDate={tournament.startsAt.toDate()} />
+            {/* Prize + mode + actions row */}
+            <div className="flex flex-wrap items-start gap-4">
+              <div className="flex-1 min-w-0">
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-0.5">Prize Pool</p>
+                <p className="font-display text-3xl sm:text-4xl text-primary tracking-wide leading-none">{tournament.prizePool}</p>
+                {(tournament.firstPrize || tournament.secondPrize) && (
+                  <div className="flex gap-2 mt-2">
+                    {tournament.firstPrize && (
+                      <span className="text-xs font-bold text-secondary bg-secondary/10 border border-secondary/20 px-2.5 py-1 rounded-full">🥇 {tournament.firstPrize}</span>
+                    )}
+                    {tournament.secondPrize && (
+                      <span className="text-xs font-bold text-gray-600 bg-gray-100 border border-gray-200 px-2.5 py-1 rounded-full">🥈 {tournament.secondPrize}</span>
+                    )}
+                  </div>
+                )}
               </div>
-            )}
+              <div className="flex flex-col items-end gap-2 shrink-0">
+                <span className="bg-secondary/10 text-secondary border border-secondary/20 text-xs font-bold px-3 py-1.5 rounded-full">⚔️ {tournament.mode}</span>
+                <div className="blink bg-primary text-white rounded-2xl px-4 py-3 text-right shadow-sm">
+                  <p className="text-xs font-semibold uppercase tracking-widest opacity-80 mb-0.5">Starts</p>
+                  <p className="font-display text-2xl sm:text-3xl tracking-wide leading-none">
+                    {formatTimeOnly(tournament.startsAt)}
+                  </p>
+                  <p className="text-xs font-semibold opacity-80 mt-0.5">
+                    {formatDateOnly(tournament.startsAt)}
+                  </p>
+                </div>
+                {canRegister && (
+                  <Link
+                    href={`/register/${id}`}
+                    className="bg-primary hover:bg-primary-dark text-white font-bold px-5 py-2 rounded-xl text-sm transition-colors"
+                  >
+                    Register Squad →
+                  </Link>
+                )}
+              </div>
+            </div>
+
+            <SlotProgressBar
+              filled={tournament.registeredCount}
+              max={tournament.maxSlots}
+              waitlisted={tournament.waitlistCount}
+            />
+
+            <CountdownTimer
+              targetDate={tournament.registrationDeadline.toDate()}
+              label="Registration Closes In"
+            />
           </div>
         </div>
 

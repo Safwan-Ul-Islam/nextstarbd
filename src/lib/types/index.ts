@@ -19,6 +19,10 @@ export interface Tournament {
   roomId: string | null;
   roomPassword: string | null;
   bannerUrl: string | null;
+  isFree: boolean;
+  registrationFee: string | null;
+  firstPrize: string | null;
+  secondPrize: string | null;
   registeredCount: number;
   waitlistCount: number;
   allUids: string[];

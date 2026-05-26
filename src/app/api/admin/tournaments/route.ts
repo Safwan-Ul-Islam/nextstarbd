@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
   try {
     await verifyAdmin(request);
     const body = await request.json();
-    const { name, description, mode, prizePool, startsAt, registrationDeadline } = body;
+    const { name, description, mode, prizePool, firstPrize, secondPrize, isFree, registrationFee, startsAt, registrationDeadline } = body;
 
     if (!name || !mode || !prizePool || !startsAt || !registrationDeadline) {
       return Response.json({ error: "Missing required fields" }, { status: 400 });
@@ -48,6 +48,10 @@ export async function POST(request: NextRequest) {
       roomId: null,
       roomPassword: null,
       bannerUrl,
+      isFree: isFree === true,
+      registrationFee: isFree ? null : (registrationFee || null),
+      firstPrize: firstPrize || null,
+      secondPrize: secondPrize || null,
       registeredCount: 0,
       waitlistCount: 0,
       allUids: [],

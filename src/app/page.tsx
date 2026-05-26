@@ -4,6 +4,7 @@ import { Footer } from "@/components/layout/Footer";
 import { HeroSection } from "@/components/home/HeroSection";
 import { FeaturedTournament } from "@/components/home/FeaturedTournament";
 import { UpcomingTournaments } from "@/components/home/UpcomingTournaments";
+import { PreviousTournaments } from "@/components/home/PreviousTournaments";
 import { PreviousHighlights } from "@/components/home/PreviousHighlights";
 import { CommunityLinks } from "@/components/home/CommunityLinks";
 import { serialize } from "@/lib/utils/serialize";
@@ -45,7 +46,10 @@ export default async function HomePage() {
         {/* Section 2 — Other upcoming tournaments */}
         <UpcomingTournaments />
 
-        {/* Section 3 — Previous champions + MVP carousel */}
+        {/* Section 3 — Completed tournaments (small result cards) */}
+        <PreviousTournaments />
+
+        {/* Section 4 — Previous champions + MVP carousel */}
         <PreviousHighlights winners={winners} mvpPlayers={mvpPlayers} />
 
         <CommunityLinks />

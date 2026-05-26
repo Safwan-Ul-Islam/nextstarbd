@@ -18,6 +18,14 @@ export function formatTournamentDate(ts: TimestampLike): string {
   return format(toDate(ts), "dd MMM yyyy, hh:mm a");
 }
 
+export function formatDateOnly(ts: TimestampLike): string {
+  return format(toDate(ts), "dd MMM yyyy");
+}
+
+export function formatTimeOnly(ts: TimestampLike): string {
+  return format(toDate(ts), "hh:mm a");
+}
+
 export function formatShortDate(ts: TimestampLike): string {
   return format(toDate(ts), "dd MMM yyyy");
 }

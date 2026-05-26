@@ -10,22 +10,16 @@ export function SlotProgressBar({ filled, max, waitlisted = 0 }: SlotProgressBar
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-1.5">
-        <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-          Slots
-        </span>
+      <div className="flex items-center justify-between mb-1">
+        <span className="text-xs font-semibold text-muted-foreground">Slots</span>
         <span className="text-xs font-bold text-foreground">
-          {filled}/{max} squads
-          {waitlisted > 0 && (
-            <span className="text-amber-600 ml-1">+{waitlisted} waitlist</span>
-          )}
+          {filled}/{max}
+          {waitlisted > 0 && <span className="text-amber-600 ml-1">+{waitlisted}</span>}
         </span>
       </div>
-      <div className="h-2 bg-muted rounded-full overflow-hidden">
+      <div className="h-1.5 bg-muted rounded-full overflow-hidden">
         <div
-          className={`h-full rounded-full transition-all duration-500 ${
-            isFull ? "bg-primary" : "bg-secondary"
-          }`}
+          className={`h-full rounded-full transition-all duration-500 ${isFull ? "bg-primary" : "bg-secondary"}`}
           style={{ width: `${confirmedPct}%` }}
         />
       </div>
