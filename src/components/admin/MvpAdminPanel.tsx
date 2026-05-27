@@ -118,10 +118,10 @@ export function MvpAdminPanel({
         ) : (
           <div className="divide-y divide-border">
             {mvpPlayers.map((m) => (
-              <div key={m.id} className="px-6 py-4 flex items-center justify-between gap-4">
-                <div>
-                  <p className="font-semibold">{m.playerName} <span className="text-muted-foreground font-normal text-sm">({m.uid})</span></p>
-                  <p className="text-sm text-muted-foreground">{m.kills} kills · {m.achievement} · {m.tournamentName} · {formatShortDate(m.tournamentDate)}</p>
+              <div key={m.id} className="px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between gap-3">
+                <div className="min-w-0 flex-1">
+                  <p className="font-semibold truncate">{m.playerName} <span className="text-muted-foreground font-normal text-sm">({m.uid})</span></p>
+                  <p className="text-xs text-muted-foreground truncate">{m.kills} kills · {m.achievement} · {m.tournamentName} · {formatShortDate(m.tournamentDate)}</p>
                 </div>
                 <button onClick={() => handleDelete(m.id)} className="text-xs text-primary hover:underline shrink-0">Delete</button>
               </div>

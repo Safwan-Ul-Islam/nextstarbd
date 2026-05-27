@@ -121,10 +121,10 @@ export function WinnersAdminPanel({
         ) : (
           <div className="divide-y divide-border">
             {winners.map((w) => (
-              <div key={w.id} className="px-6 py-4 flex items-center justify-between gap-4">
-                <div>
-                  <p className="font-semibold">{w.squadName} <span className="text-muted-foreground font-normal">— {w.position === 1 ? "🥇" : w.position === 2 ? "🥈" : "🥉"}</span></p>
-                  <p className="text-sm text-muted-foreground">{w.tournamentName} · {formatShortDate(w.tournamentDate)} · {w.prize}</p>
+              <div key={w.id} className="px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between gap-3">
+                <div className="min-w-0 flex-1">
+                  <p className="font-semibold truncate">{w.squadName} <span className="text-muted-foreground font-normal">— {w.position === 1 ? "🥇" : w.position === 2 ? "🥈" : "🥉"}</span></p>
+                  <p className="text-xs text-muted-foreground truncate">{w.tournamentName} · {formatShortDate(w.tournamentDate)} · {w.prize}</p>
                 </div>
                 <button onClick={() => handleDelete(w.id)} className="text-xs text-primary hover:underline shrink-0 font-medium">Delete</button>
               </div>

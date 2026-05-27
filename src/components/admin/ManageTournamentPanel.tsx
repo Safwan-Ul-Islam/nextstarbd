@@ -169,9 +169,9 @@ export function ManageTournamentPanel({
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-3">
-        <Button href="/admin/tournaments" variant="ghost" size="sm">← Back</Button>
-        <h1 className="font-display text-3xl text-foreground tracking-wide">{tournament.name}</h1>
+      <div className="flex items-start gap-3">
+        <Button href="/admin/tournaments" variant="ghost" size="sm" className="shrink-0 mt-1">← Back</Button>
+        <h1 className="font-display text-xl sm:text-3xl text-foreground tracking-wide leading-tight">{tournament.name}</h1>
       </div>
 
       {/* Quick stats */}

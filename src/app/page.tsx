@@ -39,7 +39,7 @@ export default async function HomePage() {
       <Navbar locale={locale} />
       <main>
         {/* Hero carousel — leaderboards, upcoming tournaments, ad */}
-        <HeroCarousel mvpPlayers={mvpPlayers} upcomingTournaments={upcomingTournaments} />
+        <HeroCarousel winners={winners} mvpPlayers={mvpPlayers} upcomingTournaments={upcomingTournaments} />
 
         {/* Section 1 — Current tournament (big, registration CTA) */}
         <FeaturedTournament />
