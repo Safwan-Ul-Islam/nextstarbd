@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="100" fill="#141414"/>
+  <!-- Amber ring -->
+  <circle cx="100" cy="100" r="92" fill="none" stroke="#f59e0b" stroke-width="6"/>
+
+  <!-- Star shape -->
+  <polygon points="100,28 108,72 152,72 117,97 130,140 100,116 70,140 83,97 48,72 92,72"
+    fill="#f59e0b" opacity="0.15"/>
+
+  <!-- N -->
+  <text x="42" y="128"
+    font-family="-apple-system, BlinkMacSystemFont, Arial, sans-serif"
+    font-size="72"
+    font-weight="800"
+    fill="#ffffff"
+    letter-spacing="-2">N</text>
+
+  <!-- B in amber -->
+  <text x="105" y="128"
+    font-family="-apple-system, BlinkMacSystemFont, Arial, sans-serif"
+    font-size="72"
+    font-weight="800"
+    fill="#f59e0b">B</text>
+
+  <!-- Small BD label -->
+  <text x="100" y="158"
+    font-family="-apple-system, BlinkMacSystemFont, Arial, sans-serif"
+    font-size="14"
+    font-weight="600"
+    fill="#6b7280"
+    text-anchor="middle"
+    letter-spacing="4">NEXSTARBD</text>
+</svg>

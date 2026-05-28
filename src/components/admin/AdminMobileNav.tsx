@@ -23,7 +23,7 @@ export function AdminMobileNav() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/banners/lnsbd.png" alt="logo" style={{ height: "32px", width: "auto", display: "block" }} />
           <span className="font-brand font-bold text-sm text-white tracking-wide">
-            NextStar<span className="text-primary">B</span><span className="text-green-500">D</span>
+            NexStar<span className="text-primary">B</span><span className="text-green-500">D</span>
             <span className="text-gray-500 font-normal text-xs ml-1">Admin</span>
           </span>
         </Link>

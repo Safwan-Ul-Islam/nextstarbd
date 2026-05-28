@@ -42,7 +42,7 @@ export function Navbar({ locale: _locale }: { locale: string }) {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/banners/lnsbd.png"
-                alt="NextStarBD"
+                alt="NexStarBD"
                 className="w-auto"
                 style={{
                   height: "clamp(38px, 6vw, 68px)",
@@ -51,7 +51,7 @@ export function Navbar({ locale: _locale }: { locale: string }) {
                 }}
               />
               <span className="font-brand font-bold text-xs sm:text-2xl text-foreground tracking-wide group-hover:text-primary transition-colors">
-                NextStar<span className="text-primary">B</span><span className="text-green-700">D</span>
+                NexStar<span className="text-primary">B</span><span className="text-green-700">D</span>
               </span>
             </Link>
 

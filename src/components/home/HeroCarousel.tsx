@@ -20,7 +20,7 @@ function BannerSlide() {
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src="/banners/bgbn.png"
-        alt="NextStarBD"
+        alt="NexStarBD"
         className="absolute inset-0 w-full h-full object-cover"
       />
     </div>

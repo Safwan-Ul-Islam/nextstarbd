@@ -14,9 +14,9 @@ export function Footer() {
           <div>
             <div className="flex items-center gap-0 mb-3">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/banners/lnsbd.png" alt="nextstarBD logo" style={{ height: "72px", width: "auto", display: "block", transform: "translateY(-6px) translateX(6px)" }} />
+              <img src="/banners/lnsbd.png" alt="NexStarBD logo" style={{ height: "72px", width: "auto", display: "block", transform: "translateY(-6px) translateX(6px)" }} />
               <span className="font-brand font-bold text-2xl tracking-wide text-foreground">
-                NextStar<span className="text-primary">B</span><span className="text-green-700">D</span>
+                NexStar<span className="text-primary">B</span><span className="text-green-700">D</span>
               </span>
             </div>
             <p className="text-muted-foreground text-sm leading-relaxed">
@@ -96,7 +96,7 @@ export function Footer() {
         </div>
 
         <div className="mt-10 pt-8 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-          <span>© {year} NextStarBD. All rights reserved.</span>
+          <span>© {year} NexStarBD. All rights reserved.</span>
           <span className="flex items-center gap-1.5">
             Built for the Bangladesh Free Fire community
             <span className="text-base">🇧🇩</span>

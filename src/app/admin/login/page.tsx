@@ -45,9 +45,9 @@ export default function AdminLoginPage() {
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-0 mb-1">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/banners/lnsbd.png" alt="nextstarBD logo" style={{ height: "100px", width: "auto", display: "block", transform: "translateY(-8px) translateX(8px)" }} />
+            <img src="/banners/lnsbd.png" alt="NexStarBD logo" style={{ height: "100px", width: "auto", display: "block", transform: "translateY(-8px) translateX(8px)" }} />
             <h1 className="font-brand font-bold text-4xl text-white tracking-wide">
-              NextStar<span className="text-primary">B</span><span className="text-green-700">D</span>
+              NexStar<span className="text-primary">B</span><span className="text-green-700">D</span>
             </h1>
           </div>
           <p className="text-gray-400 text-sm mt-2">Admin Panel</p>
@@ -74,7 +74,7 @@ export default function AdminLoginPage() {
                 required
                 autoComplete="email"
                 className="w-full border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
-                placeholder="admin@nextstarbd.com"
+                placeholder="admin@nexstarbd.com"
               />
             </div>
             <div>
